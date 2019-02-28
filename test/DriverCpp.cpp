@@ -11,12 +11,12 @@ int main(void)
 	tt = 0; /*The following test is only for random seed zero*/
 	genrandseed(tt);
 	//testDSYL();
-	testNSOLyapunov();
+	// testNSOLyapunov();
 	//testLRMatrixCompletionMore();
 	//testStieBrockettMore();
 	//testSparsePCA();
 	//testSPDMeanMore();
-	//testall();
+	testall();
 
 #ifdef _WIN64
 #ifdef _DEBUG

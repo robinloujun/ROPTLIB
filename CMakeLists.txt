@@ -39,6 +39,7 @@ set(SHARED_LIBS FALSE CACHE BOOL
 set(ROPTLIB_INCLUDE_DIRECTORIES 
 	${CMAKE_CURRENT_SOURCE_DIR}/BinaryFiles/
 	${CMAKE_CURRENT_SOURCE_DIR}/Manifolds/
+	${CMAKE_CURRENT_SOURCE_DIR}/Manifolds/CFixedRank2Factors/
 	${CMAKE_CURRENT_SOURCE_DIR}/Manifolds/CpxNStQOrth/
 	${CMAKE_CURRENT_SOURCE_DIR}/Manifolds/ElasticShape/
 	${CMAKE_CURRENT_SOURCE_DIR}/Manifolds/EucPositive/
@@ -52,16 +53,24 @@ set(ROPTLIB_INCLUDE_DIRECTORIES
 	${CMAKE_CURRENT_SOURCE_DIR}/Manifolds/SPDManifold/
 	${CMAKE_CURRENT_SOURCE_DIR}/Manifolds/SPDTensor/
 	${CMAKE_CURRENT_SOURCE_DIR}/Manifolds/Sphere/
+	${CMAKE_CURRENT_SOURCE_DIR}/Manifolds/SphereTx/
 	${CMAKE_CURRENT_SOURCE_DIR}/Manifolds/Stiefel/
 	${CMAKE_CURRENT_SOURCE_DIR}/Others/
 	${CMAKE_CURRENT_SOURCE_DIR}/Others/SparseBLAS/
+	${CMAKE_CURRENT_SOURCE_DIR}/Others/fftw/
+	${CMAKE_CURRENT_SOURCE_DIR}/Others/wavelet/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/
+	${CMAKE_CURRENT_SOURCE_DIR}/Problems/CFR2BlindDecon2D/
+	${CMAKE_CURRENT_SOURCE_DIR}/Problems/CFR2BlindDeconvolution/
+	${CMAKE_CURRENT_SOURCE_DIR}/Problems/CSOPhaseRetrieval/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/ElasticCurvesRO/
+	${CMAKE_CURRENT_SOURCE_DIR}/Problems/EucBlindDeconvolution/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/EucFrechetMean/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/EucPosSpCd/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/EucQuadratic/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/GrassRQ/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/KarcherMean/
+	${CMAKE_CURRENT_SOURCE_DIR}/Problems/LRBlindDeconvolution/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/LRMatrixCompletion/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/ObliqueSparsePCA/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/ObliqueTestSparsePCA/
@@ -71,6 +80,8 @@ set(ROPTLIB_INCLUDE_DIRECTORIES
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/SPDTensorDL/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/ShapePathStraighten/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/SphereConvexHull/
+	${CMAKE_CURRENT_SOURCE_DIR}/Problems/SphereSparsestVector/
+	${CMAKE_CURRENT_SOURCE_DIR}/Problems/SphereTxRQ/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/StieBrockett/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/StieSoftICA/
 	${CMAKE_CURRENT_SOURCE_DIR}/Problems/StieSparseBrockett/
@@ -95,6 +106,7 @@ include_directories(${CMAKE_SOURCE_DIR} ${ROPTLIB_INCLUDE_DIRECTORIES})
 # COMPILE THE ROPTLIB LIBRARY
 set(ROPTLIB_SRC
 	Manifolds/Element.cpp Manifolds/LinearOPE.cpp Manifolds/Manifold.cpp Manifolds/ProductElement.cpp Manifolds/ProductManifold.cpp Manifolds/SharedSpace.cpp Manifolds/SmartSpace.cpp 
+	Manifolds/CFixedRank2Factors/CFR2Variable.cpp Manifolds/CFixedRank2Factors/CFR2Vector.cpp Manifolds/CFixedRank2Factors/CFixedRank2Factors.cpp 
 	Manifolds/CpxNStQOrth/CSOVariable.cpp Manifolds/CpxNStQOrth/CSOVector.cpp Manifolds/CpxNStQOrth/CpxNStQOrth.cpp 
 	Manifolds/ElasticShape/ElasticShape.cpp Manifolds/ElasticShape/ShapeVariable.cpp Manifolds/ElasticShape/ShapeVector.cpp 
 	Manifolds/EucPositive/EucPosVariable.cpp Manifolds/EucPositive/EucPosVector.cpp Manifolds/EucPositive/EucPositive.cpp 
@@ -108,16 +120,23 @@ set(ROPTLIB_SRC
 	Manifolds/SPDManifold/SPDManifold.cpp Manifolds/SPDManifold/SPDVariable.cpp Manifolds/SPDManifold/SPDVector.cpp 
 	Manifolds/SPDTensor/SPDTVariable.cpp Manifolds/SPDTensor/SPDTVector.cpp Manifolds/SPDTensor/SPDTensor.cpp 
 	Manifolds/Sphere/Sphere.cpp Manifolds/Sphere/SphereVariable.cpp Manifolds/Sphere/SphereVector.cpp 
+	Manifolds/SphereTx/SphereTx.cpp 
 	Manifolds/Stiefel/StieVariable.cpp Manifolds/Stiefel/StieVector.cpp Manifolds/Stiefel/Stiefel.cpp 
 	Others/ForDebug.cpp Others/MinPNormConHull.cpp Others/MyMatrix.cpp Others/Spline.cpp Others/Timer.cpp Others/randgen.cpp 
 	Others/SparseBLAS/nist_spblas.cpp 
+	Others/wavelet/wavelet.cpp 
 	Problems/Problem.cpp
+	Problems/CFR2BlindDecon2D/CFR2BlindDecon2D.cpp 
+	Problems/CFR2BlindDeconvolution/CFR2BlindDeconvolution.cpp 
+	Problems/CSOPhaseRetrieval/CSOPhaseRetrieval.cpp 
 	Problems/ElasticCurvesRO/DriverElasticCurvesRO.cpp Problems/ElasticCurvesRO/ElasticCurvesRO.cpp 
+	Problems/EucBlindDeconvolution/EucBlindDeconvolution.cpp 
 	Problems/EucFrechetMean/EucFrechetMean.cpp 
 	Problems/EucPosSpCd/EucPosSpCd.cpp 
 	Problems/EucQuadratic/EucQuadratic.cpp 
 	Problems/GrassRQ/GrassRQ.cpp 
 	Problems/KarcherMean/KarcherMean.cpp 
+	Problems/LRBlindDeconvolution/LRBlindDeconvolution.cpp 
 	Problems/LRMatrixCompletion/LRMatrixCompletion.cpp 
 	Problems/ObliqueSparsePCA/ObliqueSparsePCA.cpp 
 	Problems/ObliqueTestSparsePCA/ObliqueTestSparsePCA.cpp 
@@ -127,12 +146,15 @@ set(ROPTLIB_SRC
 	Problems/SPDTensorDL/SPDTensorDL.cpp 
 	Problems/ShapePathStraighten/ShapePathStraighten.cpp 
 	Problems/SphereConvexHull/SphereConvexHull.cpp 
+	Problems/SphereSparsestVector/SphereSparsestVector.cpp
+	Problems/SphereTxRQ/SphereTxRQ.cpp  
 	Problems/StieBrockett/StieBrockett.cpp 
 	Problems/StieSoftICA/StieSoftICA.cpp 
 	Problems/StieSparseBrockett/StieSparseBrockett.cpp 
 	Problems/StieSumBrockett/StieSumBrockett.cpp 
 	Problems/WeightedLowrank/WeightedLowRank.cpp 
 	Solvers/LRBFGS.cpp Solvers/LRBFGSLPSub.cpp Solvers/LRTRSR1.cpp Solvers/MRankAdaptive.cpp Solvers/QuasiNewton.cpp Solvers/RBFGS.cpp Solvers/RBFGSLPSub.cpp Solvers/RBroydenFamily.cpp Solvers/RCG.cpp Solvers/RGS.cpp Solvers/RNewton.cpp Solvers/RSD.cpp Solvers/RTRNewton.cpp Solvers/RTRSD.cpp Solvers/RTRSR1.cpp Solvers/RWRBFGS.cpp Solvers/Solvers.cpp Solvers/SolversLS.cpp Solvers/SolversLSLPSub.cpp Solvers/SolversTR.cpp
+	test/ComplexToReal.cpp test/RealToComplex.cpp test/TestCFR2BlindDecon2D.cpp test/TestCFR2BlindDeconvolution.cpp test/TestCSO.cpp test/TestCSOPhaseRetrieval.cpp test/TestElasticCurvesRO.cpp test/TestEucBlindDeconvolution.cpp test/TestEucFrechetMean.cpp test/TestEucPosSpCd.cpp test/TestEucQuadratic.cpp test/TestGrassRQ.cpp test/TestKarcherMean.cpp test/TestLRBlindDeconvolution.cpp test/TestLRMatrixCompletion.cpp test/TestMyMatrix.cpp test/TestOrthBoundingBox.cpp test/TestPreShapePathStraighten.cpp test/TestProduct.cpp test/TestSPDMean.cpp test/TestSPDTensorDL.cpp test/TestShapePathStraighten.cpp test/TestSparsePCA.cpp test/TestSphereRayQuo.cpp test/TestSphereSparsestVector.cpp test/TestStieBrockett.cpp test/TestStieSoftICA.cpp test/TestStieSparseBrockett.cpp test/TestTestSparsePCA.cpp test/TestWeightedLowRank.cpp
 )
 
 if (SHARED_LIBS)
@@ -156,6 +178,9 @@ target_link_libraries(TestSimpleExample roptlib)
 
 add_executable(TestProductExample test/TestProductExample.cpp)
 target_link_libraries(TestProductExample roptlib)
+
+add_executable(TestAll test/DriverCpp.cpp)
+target_link_libraries(TestAll roptlib)
 
 # 1- local build #
 
