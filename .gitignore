@@ -28,4 +28,8 @@
 *.out
 *.app
 
+# cmake output
 \build
+
+#doxygen output
+\doc

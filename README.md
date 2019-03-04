@@ -27,3 +27,9 @@ The detalied instruction and user manual can be found at http://www.math.fsu.edu
   make -j8
   sudo make install
   ```
+
+### Generate the documentation files
+The generated files will be stored in `./doc`
+  ```shell
+  doxygen doxyfile.cfg
+  ```
