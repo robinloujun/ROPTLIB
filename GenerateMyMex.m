@@ -49,7 +49,7 @@ function GenerateMyMex(include_fftw)
             end
         end
     end
-    if(length(findstr(lower(computer('arch')), 'mac')) > 0)
+    if(length(findstr(lower(computer('arch')), 'mac')) > 0 || length(findstr(lower(computer('arch')), 'glnxa')) > 0)
         blaslib = '''-lmwblas''';
         lapacklib = '''-lmwlapack''';
         fftwlib = '''-lfftw3''';
@@ -60,6 +60,7 @@ function GenerateMyMex(include_fftw)
         lapacklib = ['''', fullfile(matlabroot,'extern','lib',computer('arch'),'microsoft','libmwlapack.lib'), ''''];
         fftwlib = ['''-L.\BinaryFiles\'', ''-llibfftw3-3'', ''-llibfftw3f-3'', ''-llibfftw3l-3'''];
     end
+    
     if(~include_fftw)
         str = ['[''-D'' upper(filename)], ', blaslib, ', ', lapacklib,  ', ''-largeArrayDims'', ''-output'', [''.' separate 'BinaryFiles' separate ''' filename ]);'];
     else
